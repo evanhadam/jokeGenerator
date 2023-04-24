@@ -8,8 +8,6 @@ function App() {
   return (
     <ChakraProvider>
       <Heading marginX={"46%"} color={"red.300"}>JokeIt</Heading>
-      <SlideBox></SlideBox>
-      <Button marginX={"47%"} marginBottom={'-50px'} backgroundColor={"red.300"} _hover={{bg: "red.700"}} _click={{bg: "red.700"}} color={"white"} onClick={() => console.log("CLICLK")}>Laugh!</Button>
       <JokePanel></JokePanel>
     </ChakraProvider>
   );
