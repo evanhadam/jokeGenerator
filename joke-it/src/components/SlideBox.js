@@ -1,28 +1,33 @@
 import { Flex, Spacer, Text, useMediaQuery, RangeSlider, RangeSliderTrack, RangeSliderFilledTrack, RangeSliderThumb } from '@chakra-ui/react';
+import { useState } from 'react';
 import { Icon } from '@chakra-ui/react';
 import { FaTools, FaHandshake, FaStar } from 'react-icons/fa';
 import React from 'react';
 
 const SlideBox = () => {
   const [isLargerThanMD] = useMediaQuery('(min-width: 48em)');
+  const [sliderValue, setSliderValue] = useState([1, 30]);
+
+  const handleSliderChange = (value) => {
+    setSliderValue(value);
+    console.log(sliderValue);
+  }
+
   const array = [
     {
       id: 1,
       text: 'Profanity',
-      min: 0,
-      max: 0
+      val: [0,0]
     },
     {
       id: 2,
       text: 'Popularity',
-      min: 0,
-      max: 0
+      val: [0,0]
     },
     {
       id: 3,
       text: 'Length',
-      min: 0,
-      max: 0
+      val: [0,0]
     },
   ];
   return (
@@ -49,11 +54,11 @@ const SlideBox = () => {
             borderRadius="md"
             flexDirection="column"
             textAlign="center"
-            mb={isLargerThanMD ? '0' : '4'}
+            mb='0'
             border="1px solid #C4DDFF"
           >
             <Text>{arr.text}</Text>
-            <RangeSlider colorScheme='red' aria-label={['min', 'max']} defaultValue={[10, 30]}>
+            <RangeSlider colorScheme='red' aria-label={['min', 'max']} defaultValue={[0, 20]} onChange={(val) => handleSliderChange(val)}>
                 <RangeSliderTrack>
                     <RangeSliderFilledTrack />
                 </RangeSliderTrack>
