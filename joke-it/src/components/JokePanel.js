@@ -2,83 +2,91 @@ import { Flex, Spacer, Text, useMediaQuery, Heading, RangeSlider, RangeSliderTra
 import { Icon } from '@chakra-ui/react';
 import React from 'react';
 import { useState } from 'react';
-import SlideBox from './SlideBox.js'
 import axios from 'axios';
 import { TriangleUpIcon } from '@chakra-ui/icons';
 
 const JokePanel = () => {
   const [isLargerThanMD] = useMediaQuery('(min-width: 48em)');
-  const [sliderValue, setSliderValue] = useState([0, 100]);
   const sliderVals = [0, 20, 0, 20, 0, 20];
+  // constant strture based on GeeksForGeeks link here: https://www.geeksforgeeks.org/how-to-connect-reactjs-with-flask-api/
+  const [data, setdata] = useState({
+    jokes: [
+      {
+        id: '#1',
+        title: '',
+        text: '',
+        upvotes: ''
+      },
+      {
+        id: '#2',
+        title: '',
+        text: '',
+        upvotes: '' 
+      },
+      {
+        id: '#3',
+        title: '',
+        text: '',
+        upvotes: ''
+      },
+      {
+          id: '#4',
+          title: '',
+          text: '',
+          upvotes: ''
+      },
+      {
+          id: '#5',
+          title: '',
+          text: '',
+          upvotes: ''
+      },
+      {
+          id: '#6',
+          title: '',
+          text: '',
+          upvotes: '0'
+      },
+      {
+          id: '#7',
+          title: '',
+          text: '',
+          upvotes: ''
+      },
+      {
+          id: '#8',
+          title: '',
+          text: '',
+          upvotes: ''
+      },
+      {
+            id: '#9',
+            title: '',
+            text: '',
+            upvotes: ''
+      },
+      {
+            id: '#10',
+            title: '',
+            text: '',
+            upvotes: ''
+      },
+    ]
+});
 
   const slideArray = [
     {
       id: 0,
       text: 'Profanity',
-      val: [0,0]
     },
     {
       id: 1,
       text: 'Popularity',
-      val: [0,0]
     },
     {
       id: 2,
       text: 'Length',
-      val: [0,0]
     }];
-  const array = [
-    {
-      id: '#1',
-      title: 'Title',
-      text: 'Joke'
-    },
-    {
-      id: '#2',
-      title: 'Title',
-      text: 'Joke'
-    },
-    {
-      id: '#3',
-      title: 'Title',
-      text: 'Joke'
-    },
-    {
-        id: '#4',
-        title: 'Title',
-        text: 'Joke'
-    },
-    {
-        id: '#5',
-        title: 'Title',
-        text: 'Joke'
-    },
-    {
-        id: '#6',
-        title: 'Title',
-        text: 'Joke'
-    },
-    {
-        id: '#7',
-        title: 'Title',
-        text: 'Joke'
-    },
-    {
-        id: '#8',
-        title: 'Title',
-        text: 'Joke'
-    },
-    {
-          id: '#9',
-          title: 'Title',
-          text: 'Joke'
-    },
-    {
-          id: '#10',
-          title: 'Title',
-          text: 'Joke'
-    },
-  ];
 
   const handleSliderChange = (value, sliderID) => {
     sliderVals[sliderID*2] = value[0];
@@ -142,6 +150,7 @@ const JokePanel = () => {
             flexDirection="column"
             textAlign="center"
             mb='0'
+            marginTop='-70px'
             border="1px solid #C4DDFF"
           >
             <Text>{arr.text}</Text>
@@ -159,9 +168,10 @@ const JokePanel = () => {
       ))}
     </Flex>
       <Button marginX={"47%"} marginTop={'-20px'} marginBottom={'20px'} backgroundColor={"red.300"} _hover={{bg: "red.700"}} _click={{bg: "red.700"}} color={"white"} onClick={() => makePostRequest('http://127.0.0.1:5000/test', sliderVals)}>Laugh!</Button>
-      {array.map((arr) => (
+      {data.jokes.map((arr) => (
         <>
           <Flex
+            id="card"
             height="400px"
             marginY="10px"
             bg="white"
@@ -178,9 +188,9 @@ const JokePanel = () => {
           >
             <Heading as='h4' size='md' fontWeight={'bold'}>{arr.id}</Heading>
             <Text>{arr.title}</Text>
-            <Text marginBottom={'250px'}>{arr.text}</Text>
-            <TriangleUpIcon color="red">Upvotes</TriangleUpIcon>
-            <Text>10000 Upvotes</Text>
+            <Text marginBottom={'285px'}>{arr.text}</Text>
+            <Text>Upvotes</Text>
+            <Text>{arr.upvotes}</Text>
           </Flex>
 
           <Spacer />
