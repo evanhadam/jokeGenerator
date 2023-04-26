@@ -91,7 +91,6 @@ const JokePanel = () => {
     sliderVals[sliderID*2] = value[0];
     sliderVals[sliderID*2 + 1] = value[1];
   }
-  console.log(sliderVals);
 
   const makePostRequest = (path, valArr) => {
     let queryObj = { sliderMin1: String(valArr[0]),
@@ -230,7 +229,7 @@ const JokePanel = () => {
         </>
       ))}
     </Flex>
-      <Button isLoading colorScheme='red' variant='solid' marginX={"47%"} marginTop={'-20px'} marginBottom={'20px'} backgroundColor={"red.300"} _hover={{bg: "red.700"}} _click={{bg: "red.700"}} color={"white"} onClick={() => makePostRequest('http://127.0.0.1:5000/test', sliderVals)}>Laugh!</Button>
+      <Button marginX={"47%"} marginTop={'-20px'} marginBottom={'20px'} backgroundColor={"red.300"} _hover={{bg: "red.700"}} _click={{bg: "red.700"}} color={"white"} onClick={() => makePostRequest('http://127.0.0.1:5000/test', sliderVals)}>Laugh!</Button>
       {data.jokes.map((arr) => (
         <>
           <Flex
