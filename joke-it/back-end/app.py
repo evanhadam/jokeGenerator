@@ -1,8 +1,8 @@
 import math
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from joke_bucketsort import perform_bucketsort
-from joke_quicksort import perform_quicksort
+from joke_bucketsort import perform_filtered_bucketsort
+from joke_quicksort import get_quicksort_time
 
 app = Flask(__name__)
 CORS(app)
@@ -30,8 +30,8 @@ def test():
    # print(max_pop_n)
    # print(min_prof_n)
    # print(max_prof_n)
-
-   return perform_bucketsort(10, min_length_n, max_length_n, min_pop_n, max_pop_n, min_prof_n, max_prof_n)
+   
+   return perform_filtered_bucketsort(10, min_length_n, max_length_n, min_pop_n, max_pop_n, min_prof_n, max_prof_n)
 
 if __name__ == '__main__':
     app.run(debug = True)
