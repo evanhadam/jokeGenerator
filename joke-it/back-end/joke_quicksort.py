@@ -3,7 +3,7 @@ import time
 import math
 from profanity_check import predict_prob
 
-input_file = open('C:\\Users\\hadam\\Downloads\\redditdata\\reddit_jokes.json')
+input_file = open('./back-end/dataset/reddit_jokes.json')
 json_array = json.load(input_file)
 jokes = []
 
@@ -57,7 +57,12 @@ def perform_filtered_quicksort(num_jokes, min_joke_length, max_joke_length, min_
                 if joke['body'].lower().strip() not in ("[deleted]", "[removed]"):
                     if math.floor(predict_prob([joke['title'].strip() + joke['body'].strip()])[0] * 100) in range(min_profanity, max_profanity):
                         if joke['score'] >= min_popularity and joke['score'] <= max_popularity:
-                            if joke not in filtered_jokes:
+                            stopwords = ['nsfw', 'NSFW', 'r/jokes', 'reddit', 'Reddit', 'www', 'Edit', 'edit', 'E:', 'EDIT', 'bitch', 'fuck', 'shit', 'pussy', 'blowjob', 'r/', 'erection']
+                            stopwordInJoke = False
+                            for word in stopwords:
+                                if word in joke['title'] or word in joke['body']:
+                                    stopwordInJoke = True
+                            if joke not in filtered_jokes and not stopwordInJoke:
                                 counter += 1
                                 filtered_jokes.append(joke)
                             

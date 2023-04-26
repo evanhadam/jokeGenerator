@@ -4,8 +4,9 @@ import math
 from profanity_check import predict_prob
 from joke_quicksort import get_quicksort_time
 
-input_file = open('/Users/jonathan/Downloads/jokeGenerator-main/joke-it/back-end/dataset/reddit_jokes.json')
+input_file = open('./back-end/dataset/reddit_jokes.json')
 json_array = json.load(input_file)
+
 jokes = []
 
 def insertion_sort(bucket):
@@ -67,13 +68,14 @@ def perform_filtered_bucketsort(num_jokes, min_joke_length, max_joke_length, min
                 if joke['body'].lower().strip() not in ("[deleted]", "[removed]"):
                     if math.floor(predict_prob([joke['title'].strip() + joke['body'].strip()])[0] * 100) in range(min_profanity, max_profanity):
                         if joke['score'] >= min_popularity and joke['score'] <= max_popularity:
-                            if joke not in filtered_jokes:
+                            stopwords = ['nsfw', 'NSFW', 'r/jokes', 'reddit', 'Reddit', 'www', 'Edit', 'edit', 'E:', 'EDIT', 'bitch', 'fuck', 'shit', 'pussy', 'blowjob', 'r/', 'erection']
+                            stopwordInJoke = False
+                            for word in stopwords:
+                                if word in joke['title'] or word in joke['body']:
+                                    stopwordInJoke = True
+                            if joke not in filtered_jokes and not stopwordInJoke:
                                 counter += 1
                                 filtered_jokes.append(joke)
                             
     list = [{"num": i + 1, "title": joke['title'].strip(), "body": joke['body'].strip(), "score": joke['score'], "profanity": predict_prob([joke['title'].strip() + joke['body'].strip()])[0]} for i, joke in enumerate(filtered_jokes[:num_jokes])]
     return json.dumps({"bucketsort_time": t2 - t1, "quicksort_time": get_quicksort_time(), "jokes": list}, indent=4)
-
-    # with open("/Users/Jonathan/Desktop/DSAProj3b/out.json", 'w') as outfile:
-    #     list = [{"num": i + 1, "title": joke['title'].strip(), "body": joke['body'].strip(), "score": joke['score'], "profanity": predict_prob([joke['title'].strip() + joke['body'].strip()])[0]} for i, joke in enumerate(filtered_jokes[:num_jokes])]
-    #     json.dump({"time": t2 - t1, "jokes": list}, outfile, indent=4)

@@ -6,7 +6,8 @@ import axios from 'axios';
 const JokePanel = () => {
   // used to make site responsive: https://chakra-ui.com/docs/hooks/use-media-query
   const [size] = useMediaQuery('(min-width: 48em)');
-  const sliderVals = [0, 20, 0, 20, 0, 20];
+  const sliderVals = [0, 20, 0, 20, 0, 20]
+  const [times, setTimes] = useState({'quick_time': '', 'bucket_time': ''})
   // constant and makePostRequest hook structure based on GeeksForGeeks link here: https://www.geeksforgeeks.org/how-to-connect-reactjs-with-flask-api/
   const [data, setData] = useState({
     joke: [
@@ -93,6 +94,8 @@ const JokePanel = () => {
     }
 
   const makePostRequest = (path, valArr) => {
+    setTimes({'quick_time': 'Loading...', 'bucket_time': 'Loading...'})
+    
     let queryObj = { sliderMin1: String(valArr[0]),
                     sliderMax1: String(valArr[1]),
                     sliderMin2: String(valArr[2]),
@@ -101,76 +104,82 @@ const JokePanel = () => {
                     sliderMax3: String(valArr[5])};
     axios.post(path, queryObj).then(
         (response) => {
-            let result = response.data;
-            console.log(result);
+            const result = response.data;
+            var database = JSON.parse(result);
+            console.log(typeof result);
+            console.log(typeof database);
+            console.log(String(result.bucketsort_time));
+            console.log(String(database.bucketsort_time));
             // setData, edit all titles and jokes according to JSON output
             setData(
               {joke: [
                 {
                   id: '#1',
-                  title: result.jokes[0].title,
-                  text: result.jokes[0].body,
-                  upvotes: result.jokes[0].score
+                  title: database.jokes[0].title,
+                  text: database.jokes[0].body,
+                  upvotes: database.jokes[0].score
                 },
                 {
                   id: '#2',
-                  title: result.jokes[1].title,
-                  text: result.jokes[1].body,
-                  upvotes: result.jokes[1].score
+                  title: database.jokes[1].title,
+                  text: database.jokes[1].body,
+                  upvotes: database.jokes[1].score
                 },
                 {
                   id: '#3',
-                  title: result.jokes[2].title,
-                  text: result.jokes[2].body,
-                  upvotes: result.jokes[2].score
+                  title: database.jokes[2].title,
+                  text: database.jokes[2].body,
+                  upvotes: database.jokes[2].score
                 },
                 {
                     id: '#4',
-                    title: result.jokes[3].title,
-                    text: result.jokes[3].body,
-                    upvotes: result.jokes[3].score
+                    title: database.jokes[3].title,
+                    text: database.jokes[3].body,
+                    upvotes: database.jokes[3].score
                 },
                 {
                     id: '#5',
-                    title: result.jokes[4].title,
-                    text: result.jokes[4].body,
-                    upvotes: result.jokes[4].score
+                    title: database.jokes[4].title,
+                    text: database.jokes[4].body,
+                    upvotes: database.jokes[4].score
                 },
                 {
                     id: '#6',
-                    title: result.jokes[5].title,
-                    text: result.jokes[5].body,
-                    upvotes: result.jokes[5].score
+                    title: database.jokes[5].title,
+                    text: database.jokes[5].body,
+                    upvotes: database.jokes[5].score
                 },
                 {
                     id: '#7',
-                    title: result.jokes[6].title,
-                    text: result.jokes[6].body,
-                    upvotes: result.jokes[6].score
+                    title: database.jokes[6].title,
+                    text: database.jokes[6].body,
+                    upvotes: database.jokes[6].score
                 },
                 {
                     id: '#8',
-                    title: result.jokes[7].title,
-                    text: result.jokes[7].body,
-                    upvotes: result.jokes[7].score
+                    title: database.jokes[7].title,
+                    text: database.jokes[7].body,
+                    upvotes: database.jokes[7].score
                 },
                 {
                       id: '#9',
-                      title: result.jokes[8].title,
-                      text: result.jokes[8].body,
-                      upvotes: result.jokes[8].score
+                      title: database.jokes[8].title,
+                      text: database.jokes[8].body,
+                      upvotes: database.jokes[8].score
                 },
                 {
                       id: '#10',
-                      title: result.jokes[9].title,
-                      text: result.jokes[9].body,
-                      upvotes: result.jokes[9].score
+                      title: database.jokes[9].title,
+                      text: database.jokes[9].body,
+                      upvotes: database.jokes[9].score
                 },
               ]}
             )
+            setTimes({'quick_time': String(database.quicksort_time) + ' nanoseconds', 'bucket_time': String(database.bucketsort_time) + ' nanoseconds'})
         },
         (error) => {
             console.log(error);
+            setTimes({'quick_time': 'Error! Not 10 jokes in this category!', 'bucket_time': 'Error! Not 10 jokes in this category!'})
         }
     );
 }
@@ -229,7 +238,9 @@ const JokePanel = () => {
         </>
       ))}
     </Flex>
-      <Button marginX={"47%"} marginTop={'-20px'} marginBottom={'20px'} backgroundColor={"red.300"} _hover={{bg: "red.700"}} _click={{bg: "red.700"}} color={"white"} onClick={() => makePostRequest('http://127.0.0.1:5000/test', sliderVals)}>Laugh!</Button>
+      <Text>Quick Sort: {times.quick_time}</Text>
+      <Text>Bucket Sort: {times.bucket_time}</Text>
+      <Button id = 'button' marginX={"47%"} marginTop={'-20px'} marginBottom={'20px'} backgroundColor={"red.300"} _hover={{bg: "red.700"}} _click={{bg: "red.700"}} color={"white"} onClick={() => makePostRequest('http://127.0.0.1:5000/test', sliderVals)}>Laugh!</Button>
       {data.joke.map((arr) => (
         <>
           <Flex
