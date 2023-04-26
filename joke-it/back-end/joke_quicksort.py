@@ -1,25 +1,15 @@
 import json
 import time
-import profanity_check as pc
+import math
+from profanity_check import predict_prob
 
-with open('reddit_jokes.json', 'r') as file:
-    
-    data = json.load(file)
-
+input_file = open('/Users/jonathan/Downloads/jokeGenerator-main/joke-it/back-end/dataset/reddit_jokes.json')
+json_array = json.load(input_file)
 jokes = []
 
-for item in data:
-    joke_details = {"title": None, "body": None, "body_length": None, "score": None, "pscore": None}
-    joke_details['title'] = item['title']
-    joke_details['body'] = item['body']
-    joke_details['body_length'] = len(item['body'])
-    joke_details['score'] = item['score']
-    #joke_details['pscore'] = pc.predict_prob([item['body']])
-    jokes.append(joke_details)
-
-t1 = time.perf_counter_ns()
-
-# Sorts ints
+#Quick sorts the entire input list by using list comprehension
+#pivot will always be set to the middle item in the list
+#must pass in a parameter to sort by
 def quick_sort(arr, param):
     if len(arr) <= 1:
         return arr
@@ -31,23 +21,29 @@ def quick_sort(arr, param):
 
     return quick_sort(left, param) + middle + quick_sort(right, param)
 
-t2 = time.perf_counter_ns()
+def perform_quicksort(num_jokes, min_joke_length, max_joke_length, min_popularity, max_popularity, min_profanity, max_profanity):
+    for item in json_array:
+        joke_details = {"title": None, "body": None, "score": None}
+        joke_details['title'] = item['title']
+        joke_details['body'] = item['body']
+        joke_details['score'] = item['score']
+        jokes.append(joke_details)
 
-def profanity_filter(list, prof_percent, num_jokes):
+    t1 = time.perf_counter_ns()
+    sorted_jokes = quick_sort(jokes, "score")
+    t2 = time.perf_counter_ns()
+
     filtered_jokes = []
     counter = 0
-    for item in list: 
-        if pc.predict_prob([item['body']]) < prof_percent and pc.predict_prob([item['title']]) < prof_percent :
-            filtered_jokes.append(item)
-            counter += 1
-        if (counter >= num_jokes):
-            break
-    return filtered_jokes
-        
-#testing stuffs
-sorted_score_list = quick_sort(jokes, "score")
-filtered_jokes = profanity_filter(sorted_score_list, .1, 3)
-print(t2 - t1)
-for i in filtered_jokes:
-    print(i['title'], "\n", i['body'])
-
+    for joke in sorted_jokes:
+        if counter != num_jokes:
+            if len(joke['title']) + len(joke['body']) >= min_joke_length and len(joke['title']) + len(joke['body']) <= max_joke_length:
+                if joke['body'].lower().strip() not in ("[deleted]", "[removed]"):
+                    if math.floor(predict_prob([joke['title'].strip() + joke['body'].strip()])[0] * 100) in range(min_profanity, max_profanity):
+                        if joke['score'] >= min_popularity and joke['score'] <= max_popularity:
+                            if joke not in filtered_jokes:
+                                counter += 1
+                                filtered_jokes.append(joke)
+                            
+    list = [{"num": i + 1, "title": joke['title'].strip(), "body": joke['body'].strip(), "score": joke['score'], "profanity": predict_prob([joke['title'].strip() + joke['body'].strip()])[0]} for i, joke in enumerate(filtered_jokes[:num_jokes])]
+    return json.dumps({"time": t2 - t1, "jokes": list}, indent=4)
