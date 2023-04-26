@@ -9,7 +9,7 @@ const JokePanel = () => {
   const sliderVals = [0, 20, 0, 20, 0, 20];
   // constant and makePostRequest hook structure based on GeeksForGeeks link here: https://www.geeksforgeeks.org/how-to-connect-reactjs-with-flask-api/
   const [data, setData] = useState({
-    jokes: [
+    joke: [
       {
         id: '#1',
         title: '',
@@ -87,10 +87,10 @@ const JokePanel = () => {
       text: 'Length'
     }];
 
-  const handleSliderChange = (value, sliderID) => {
-    sliderVals[sliderID*2] = value[0];
-    sliderVals[sliderID*2 + 1] = value[1];
-  }
+    const handleSliderChange = (value, sliderID) => {
+      sliderVals[sliderID*2] = value[0];
+      sliderVals[sliderID*2 + 1] = value[1];
+    }
 
   const makePostRequest = (path, valArr) => {
     let queryObj = { sliderMin1: String(valArr[0]),
@@ -105,66 +105,66 @@ const JokePanel = () => {
             console.log(result);
             // setData, edit all titles and jokes according to JSON output
             setData(
-              {jokes: [
+              {joke: [
                 {
                   id: '#1',
-                  title: result.Result,
-                  text: '',
-                  upvotes: ''
+                  title: result.jokes[0].title,
+                  text: result.jokes[0].body,
+                  upvotes: result.jokes[0].score
                 },
                 {
                   id: '#2',
-                  title: '',
-                  text: '',
-                  upvotes: '' 
+                  title: result.jokes[1].title,
+                  text: result.jokes[1].body,
+                  upvotes: result.jokes[1].score
                 },
                 {
                   id: '#3',
-                  title: '',
-                  text: '',
-                  upvotes: ''
+                  title: result.jokes[2].title,
+                  text: result.jokes[2].body,
+                  upvotes: result.jokes[2].score
                 },
                 {
                     id: '#4',
-                    title: '',
-                    text: '',
-                    upvotes: ''
+                    title: result.jokes[3].title,
+                    text: result.jokes[3].body,
+                    upvotes: result.jokes[3].score
                 },
                 {
                     id: '#5',
-                    title: '',
-                    text: '',
-                    upvotes: ''
+                    title: result.jokes[4].title,
+                    text: result.jokes[4].body,
+                    upvotes: result.jokes[4].score
                 },
                 {
                     id: '#6',
-                    title: '',
-                    text: '',
-                    upvotes: ''
+                    title: result.jokes[5].title,
+                    text: result.jokes[5].body,
+                    upvotes: result.jokes[5].score
                 },
                 {
                     id: '#7',
-                    title: '',
-                    text: '',
-                    upvotes: ''
+                    title: result.jokes[6].title,
+                    text: result.jokes[6].body,
+                    upvotes: result.jokes[6].score
                 },
                 {
                     id: '#8',
-                    title: '',
-                    text: '',
-                    upvotes: ''
+                    title: result.jokes[7].title,
+                    text: result.jokes[7].body,
+                    upvotes: result.jokes[7].score
                 },
                 {
                       id: '#9',
-                      title: '',
-                      text: '',
-                      upvotes: ''
+                      title: result.jokes[8].title,
+                      text: result.jokes[8].body,
+                      upvotes: result.jokes[8].score
                 },
                 {
                       id: '#10',
-                      title: '',
-                      text: '',
-                      upvotes: ''
+                      title: result.jokes[9].title,
+                      text: result.jokes[9].body,
+                      upvotes: result.jokes[9].score
                 },
               ]}
             )
@@ -230,7 +230,7 @@ const JokePanel = () => {
       ))}
     </Flex>
       <Button marginX={"47%"} marginTop={'-20px'} marginBottom={'20px'} backgroundColor={"red.300"} _hover={{bg: "red.700"}} _click={{bg: "red.700"}} color={"white"} onClick={() => makePostRequest('http://127.0.0.1:5000/test', sliderVals)}>Laugh!</Button>
-      {data.jokes.map((arr) => (
+      {data.joke.map((arr) => (
         <>
           <Flex
             id="card"
@@ -250,7 +250,7 @@ const JokePanel = () => {
           >
             <Heading as='h4' size='md' fontWeight={'bold'}>{arr.id}</Heading>
             <Text>{arr.title}</Text>
-            <Text marginBottom={'285px'}>{arr.text}</Text>
+            <Text marginBottom={'auto'}>{arr.text}</Text>
             <Text>Upvotes</Text>
             <Text>{arr.upvotes}</Text>
           </Flex>
