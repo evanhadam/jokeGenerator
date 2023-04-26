@@ -88,11 +88,13 @@ const JokePanel = () => {
       text: 'Length'
     }];
 
+    // updates slider values based on user input
     const handleSliderChange = (value, sliderID) => {
       sliderVals[sliderID*2] = value[0];
       sliderVals[sliderID*2 + 1] = value[1];
     }
 
+  // makes API calls to send slider values and get back sort times and 10 jokes
   const makePostRequest = (path, valArr) => {
     setTimes({'quick_time': 'Loading...', 'bucket_time': 'Loading...'})
     
@@ -185,7 +187,8 @@ const JokePanel = () => {
 }
 
   // Chakra UI Flex: https://chakra-ui.com/docs/components/flex
-  // Chakra UI Range SLider: https://chakra-ui.com/docs/components/range-slider
+  // Chakra UI Range Slider: https://chakra-ui.com/docs/components/range-slider
+  // generates all UI elements
   return (
     <Flex
       minH="10vh"
@@ -240,7 +243,7 @@ const JokePanel = () => {
     </Flex>
       <Text>Quick Sort: {times.quick_time}</Text>
       <Text>Bucket Sort: {times.bucket_time}</Text>
-      <Button id = 'button' marginX={"47%"} marginTop={'-20px'} marginBottom={'20px'} backgroundColor={"red.300"} _hover={{bg: "red.700"}} _click={{bg: "red.700"}} color={"white"} onClick={() => makePostRequest('http://127.0.0.1:5000/test', sliderVals)}>Laugh!</Button>
+      <Button id = 'button' marginX={"47%"} marginTop={'-20px'} marginBottom={'20px'} backgroundColor={"red.300"} _hover={{bg: "red.700"}} _click={{bg: "red.700"}} color={"white"} onClick={() => makePostRequest('http://127.0.0.1:5000/pull', sliderVals)}>Laugh!</Button>
       {data.joke.map((arr) => (
         <>
           <Flex
@@ -269,8 +272,10 @@ const JokePanel = () => {
           <Spacer />
         </>
       ))}
+      <Text marginX={'13%'}>Disclaimer: We do not condone offensive or overly out-of-pocket content within these jokes. We're simply compiling what's out there for you.</Text>
     </Flex>
   );
 };
 
+// allows for call to JokePanel in App.js
 export default JokePanel;
