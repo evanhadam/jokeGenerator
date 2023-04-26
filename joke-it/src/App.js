@@ -1,4 +1,3 @@
-import './App.css';
 import { ChakraProvider, Heading } from '@chakra-ui/react'
 import JokePanel from './components/JokePanel';
 
