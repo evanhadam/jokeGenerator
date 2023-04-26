@@ -21,7 +21,23 @@ def quick_sort(arr, param):
 
     return quick_sort(left, param) + middle + quick_sort(right, param)
 
-def perform_quicksort(num_jokes, min_joke_length, max_joke_length, min_popularity, max_popularity, min_profanity, max_profanity):
+
+def get_quicksort_time():
+    for item in json_array:
+        joke_details = {"title": None, "body": None, "score": None}
+        joke_details['title'] = item['title']
+        joke_details['body'] = item['body']
+        joke_details['score'] = item['score']
+        jokes.append(joke_details)
+
+    t1 = time.perf_counter_ns()
+    sorted_jokes = quick_sort(jokes, "score")
+    t2 = time.perf_counter_ns()
+
+    return t2 - t1
+
+
+def perform_filtered_quicksort(num_jokes, min_joke_length, max_joke_length, min_popularity, max_popularity, min_profanity, max_profanity):
     for item in json_array:
         joke_details = {"title": None, "body": None, "score": None}
         joke_details['title'] = item['title']
