@@ -1,15 +1,14 @@
 import { Flex, Spacer, Text, useMediaQuery, Heading, RangeSlider, RangeSliderTrack, RangeSliderFilledTrack, RangeSliderThumb, Button, handleSliderChange } from '@chakra-ui/react';
-import { Icon } from '@chakra-ui/react';
 import React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
-import { TriangleUpIcon } from '@chakra-ui/icons';
 
 const JokePanel = () => {
-  const [isLargerThanMD] = useMediaQuery('(min-width: 48em)');
+  // used to make site responsive: https://chakra-ui.com/docs/hooks/use-media-query
+  const [size] = useMediaQuery('(min-width: 48em)');
   const sliderVals = [0, 20, 0, 20, 0, 20];
-  // constant strture based on GeeksForGeeks link here: https://www.geeksforgeeks.org/how-to-connect-reactjs-with-flask-api/
-  const [data, setdata] = useState({
+  // constant and makePostRequest hook structure based on GeeksForGeeks link here: https://www.geeksforgeeks.org/how-to-connect-reactjs-with-flask-api/
+  const [data, setData] = useState({
     jokes: [
       {
         id: '#1',
@@ -45,7 +44,7 @@ const JokePanel = () => {
           id: '#6',
           title: '',
           text: '',
-          upvotes: '0'
+          upvotes: ''
       },
       {
           id: '#7',
@@ -77,22 +76,20 @@ const JokePanel = () => {
   const slideArray = [
     {
       id: 0,
-      text: 'Profanity',
+      text: 'Profanity'
     },
     {
       id: 1,
-      text: 'Popularity',
+      text: 'Popularity'
     },
     {
       id: 2,
-      text: 'Length',
+      text: 'Length'
     }];
 
   const handleSliderChange = (value, sliderID) => {
     sliderVals[sliderID*2] = value[0];
-    console.log(sliderVals[sliderID*2]);
     sliderVals[sliderID*2 + 1] = value[1];
-    console.log(sliderVals[sliderID*2+1]);
   }
   console.log(sliderVals);
 
@@ -107,6 +104,71 @@ const JokePanel = () => {
         (response) => {
             let result = response.data;
             console.log(result);
+            // setData, edit all titles and jokes according to JSON output
+            setData(
+              {jokes: [
+                {
+                  id: '#1',
+                  title: result.Result,
+                  text: '',
+                  upvotes: ''
+                },
+                {
+                  id: '#2',
+                  title: '',
+                  text: '',
+                  upvotes: '' 
+                },
+                {
+                  id: '#3',
+                  title: '',
+                  text: '',
+                  upvotes: ''
+                },
+                {
+                    id: '#4',
+                    title: '',
+                    text: '',
+                    upvotes: ''
+                },
+                {
+                    id: '#5',
+                    title: '',
+                    text: '',
+                    upvotes: ''
+                },
+                {
+                    id: '#6',
+                    title: '',
+                    text: '',
+                    upvotes: ''
+                },
+                {
+                    id: '#7',
+                    title: '',
+                    text: '',
+                    upvotes: ''
+                },
+                {
+                    id: '#8',
+                    title: '',
+                    text: '',
+                    upvotes: ''
+                },
+                {
+                      id: '#9',
+                      title: '',
+                      text: '',
+                      upvotes: ''
+                },
+                {
+                      id: '#10',
+                      title: '',
+                      text: '',
+                      upvotes: ''
+                },
+              ]}
+            )
         },
         (error) => {
             console.log(error);
@@ -114,7 +176,8 @@ const JokePanel = () => {
     );
 }
 
-
+  // Chakra UI Flex: https://chakra-ui.com/docs/components/flex
+  // Chakra UI Range SLider: https://chakra-ui.com/docs/components/range-slider
   return (
     <Flex
       minH="10vh"
@@ -122,9 +185,9 @@ const JokePanel = () => {
       justifyContent="space-between"
       w="full"
       py="16"
-      px={isLargerThanMD ? '16' : '6'}
+      px={size ? '16' : '6'}
       flexWrap="wrap"
-      flexDirection={isLargerThanMD ? 'row' : 'column'}
+      flexDirection={size ? 'row' : 'column'}
     >
       <Flex
       minH="10vh"
@@ -132,16 +195,16 @@ const JokePanel = () => {
       justifyContent="space-between"
       w="full"
       py="16"
-      px={isLargerThanMD ? '16' : '6'}
+      px={size ? '16' : '6'}
       flexWrap="wrap"
-      flexDirection={isLargerThanMD ? 'row' : 'column'}
+      flexDirection={size ? 'row' : 'column'}
     >
       {slideArray.map((arr) => (
         <>
           <Flex
             height="100px"
             bg="blackAlpha.200"
-            width={isLargerThanMD ? '32%' : 'full'}
+            width={size ? '32%' : 'full'}
             shadow="md"
             p="6"
             alignItems="center"
@@ -167,7 +230,7 @@ const JokePanel = () => {
         </>
       ))}
     </Flex>
-      <Button marginX={"47%"} marginTop={'-20px'} marginBottom={'20px'} backgroundColor={"red.300"} _hover={{bg: "red.700"}} _click={{bg: "red.700"}} color={"white"} onClick={() => makePostRequest('http://127.0.0.1:5000/test', sliderVals)}>Laugh!</Button>
+      <Button isLoading colorScheme='red' variant='solid' marginX={"47%"} marginTop={'-20px'} marginBottom={'20px'} backgroundColor={"red.300"} _hover={{bg: "red.700"}} _click={{bg: "red.700"}} color={"white"} onClick={() => makePostRequest('http://127.0.0.1:5000/test', sliderVals)}>Laugh!</Button>
       {data.jokes.map((arr) => (
         <>
           <Flex
@@ -175,7 +238,7 @@ const JokePanel = () => {
             height="400px"
             marginY="10px"
             bg="white"
-            width={isLargerThanMD ? '18%' : 'full'}
+            width={size ? '18%' : 'full'}
             shadow="md"
             p="6"
             alignItems="start"
