@@ -21,7 +21,7 @@ def quick_sort(arr, param):
 
     return quick_sort(left, param) + middle + quick_sort(right, param)
 
-
+#Returns the time by quick sorting the json
 def get_quicksort_time():
     for item in json_array:
         joke_details = {"title": None, "body": None, "score": None}
@@ -36,7 +36,7 @@ def get_quicksort_time():
 
     return t2 - t1
 
-
+#Returns the sorted json given a json of jokes and parameters
 def perform_filtered_quicksort(num_jokes, min_joke_length, max_joke_length, min_popularity, max_popularity, min_profanity, max_profanity):
     for item in json_array:
         joke_details = {"title": None, "body": None, "score": None}
@@ -51,6 +51,7 @@ def perform_filtered_quicksort(num_jokes, min_joke_length, max_joke_length, min_
 
     filtered_jokes = []
     counter = 0
+    #Long chain of ifs that finds a number of jokes in the sorted file that fits the input parameters
     for joke in sorted_jokes:
         if counter != num_jokes:
             if len(joke['title']) + len(joke['body']) >= min_joke_length and len(joke['title']) + len(joke['body']) <= max_joke_length:
@@ -65,6 +66,6 @@ def perform_filtered_quicksort(num_jokes, min_joke_length, max_joke_length, min_
                             if joke not in filtered_jokes and not stopwordInJoke:
                                 counter += 1
                                 filtered_jokes.append(joke)
-                            
+    #creates and returns the sorted json of jokes that meets the parameters             
     list = [{"num": i + 1, "title": joke['title'].strip(), "body": joke['body'].strip(), "score": joke['score'], "profanity": predict_prob([joke['title'].strip() + joke['body'].strip()])[0]} for i, joke in enumerate(filtered_jokes[:num_jokes])]
     return json.dumps({"time": t2 - t1, "jokes": list}, indent=4)
