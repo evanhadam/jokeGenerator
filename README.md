@@ -16,3 +16,6 @@ A web app made with React and Flask to display the top 10 jokes depending on sel
 
 ## Dataset Used
 https://www.kaggle.com/datasets/averkij/reddit-jokes-dataset
+
+## Video Demo
+https://www.youtube.com/watch?v=aelzEumH_Qw
